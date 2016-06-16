@@ -8,7 +8,8 @@ require "kemal"
 require "pg"
 require "pool/connection"
 pg = ConnectionPool.new(capacity: 25, timeout: 0.1) do
-  PG.connect(ENV["DATABASE_URL"])
+  #PG.connect(ENV["DATABASE_URL"])
+  PG.connect("postgres://preface@localhost:5432/kemal_sample")
 end
 
 
@@ -35,40 +36,47 @@ end
 post "/articles" do |env|
   title_param = env.params.body["title"]
   body_param = env.params.body["body"]
-  title_param = title_param.gsub("'", "").gsub(";","")
-  body_param = body_param.gsub("'", "").gsub(";","")
+  params = [] of String
+  params << title_param
+  params << body_param
   conn = pg.connection
-  conn.exec("insert into articles(title, body) values('#{title_param}', '#{body_param}')")
+  conn.exec("insert into articles(title, body) values($1::text, $2::text)", params)
   pg.release
   env.redirect "/"
 end
 
 get "/articles/:id" do |env|
-  id = env.params.url["id"]
+  id = env.params.url["id"].to_i32
+  params = [] of Int32
+  params << id
   conn = pg.connection
-  result = conn.exec({Int32, String, String}, "select id, title, body from articles where id = #{id}")
+  result = conn.exec({Int32, String, String}, "select id, title, body from articles where id = $1::int8", params)
   pg.release
   articles = result.to_hash
   render "src/views/articles/show.ecr", "src/views/application.ecr"
 end
 
 get "/articles/:id/edit" do |env|
-  id = env.params.url["id"]
+  id = env.params.url["id"].to_i32
+  params = [] of Int32
+  params << id
   conn = pg.connection
-  result = conn.exec({Int32, String, String}, "select id, title, body from articles where id = #{id}")
+  result = conn.exec({Int32, String, String}, "select id, title, body from articles where id = $1::int8", params)
   pg.release
   articles = result.to_hash
   render "src/views/articles/edit.ecr", "src/views/application.ecr"
 end
 
 put "/articles/:id" do |env|
-  id = env.params.url["id"]
+  id = env.params.url["id"].to_i32
   title_param = env.params.body["title"]
   body_param = env.params.body["body"]
-  title_param = title_param.gsub("'", "").gsub(";","")
-  body_param = body_param.gsub("'", "").gsub(";","")
+  params = [] of String | Int32
+  params << title_param
+  params << body_param
+  params << id
   conn = pg.connection
-  conn.exec("update articles set title = '#{title_param}', body = '#{body_param}' where id = #{id}")
+  conn.exec("update articles set title = $1::text, body = $2::text where id = $3::int8", params)
   pg.release
   env.redirect "/articles/#{id}"
 end
