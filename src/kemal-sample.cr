@@ -8,8 +8,8 @@ require "kemal"
 require "pg"
 require "pool/connection"
 pg = ConnectionPool.new(capacity: 25, timeout: 0.1) do
-  #PG.connect(ENV["DATABASE_URL"])
-  PG.connect("postgres://preface@localhost:5432/kemal_sample")
+  PG.connect(ENV["DATABASE_URL"])
+  #PG.connect("postgres://preface@localhost:5432/kemal_sample")
 end
 
 
