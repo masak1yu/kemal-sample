@@ -1,6 +1,6 @@
-# msky-kemal-sample
+# kemal-sample
 
-TODO: Write a description here
+For a Kemal Sample App
 
 ## Installation
 
