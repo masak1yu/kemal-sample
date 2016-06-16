@@ -1,0 +1,17 @@
+name: msky-kemal-sample
+version: 0.1.0
+
+dependencies:
+  kemal:
+    github: sdogruyol/kemal
+    branch: master
+
+dependencies:
+  kemal-pg:
+    github: sdogruyol/kemal-pg
+    branch: master
+
+authors:
+  - ucmsky <antilogic@outlook.com>
+
+license: MIT
