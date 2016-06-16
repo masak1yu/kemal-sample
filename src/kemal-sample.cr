@@ -35,6 +35,8 @@ end
 post "/articles" do |env|
   title_param = env.params.body["title"]
   body_param = env.params.body["body"]
+  title_param = title_param.gsub("'", "").gsub(";","")
+  body_param = body_param.gsub("'", "").gsub(";","")
   conn = pg.connection
   conn.exec("insert into articles(title, body) values('#{title_param}', '#{body_param}')")
   pg.release
@@ -63,6 +65,8 @@ put "/articles/:id" do |env|
   id = env.params.url["id"]
   title_param = env.params.body["title"]
   body_param = env.params.body["body"]
+  title_param = title_param.gsub("'", "").gsub(";","")
+  body_param = body_param.gsub("'", "").gsub(";","")
   conn = pg.connection
   conn.exec("update articles set title = '#{title_param}', body = '#{body_param}' where id = #{id}")
   pg.release
