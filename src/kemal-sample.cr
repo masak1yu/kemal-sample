@@ -8,8 +8,11 @@ require "kemal"
 require "pg"
 require "pool/connection"
 pg = ConnectionPool.new(capacity: 25, timeout: 0.1) do
-  #PG.connect(ENV["DATABASE_URL"])
-  PG.connect("postgres://preface@localhost:5432/kemal_sample")
+  if ENV["KEMAL_ENV"]? && ENV["KEMAL_ENV"] == "production"
+    PG.connect(ENV["DATABASE_URL"])
+  else
+    PG.connect("postgres://preface@localhost:5432/kemal_sample")
+  end
 end
 
 
