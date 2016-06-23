@@ -4,4 +4,10 @@
   <p><%=article["body"] %></p>
 <br />
 <a href="/articles/<%=article["id"] %>/edit" target="_top" class="btn btn-primary">edit</a>
+<br />
+<br />
+<form method="post", action="/articles/<%=article["id"] %>">
+  <input type="hidden", name="_method", value="delete" />
+  <input type='submit' value='delete' onClick='return confirm("よろしいですか？");' class="btn btn-danger"/>
+</form>
 <% end %>

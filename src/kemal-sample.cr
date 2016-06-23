@@ -8,8 +8,8 @@ require "kemal"
 require "pg"
 require "pool/connection"
 pg = ConnectionPool.new(capacity: 25, timeout: 0.1) do
-  PG.connect(ENV["DATABASE_URL"])
-  #PG.connect("postgres://preface@localhost:5432/kemal_sample")
+  #PG.connect(ENV["DATABASE_URL"])
+  PG.connect("postgres://preface@localhost:5432/kemal_sample")
 end
 
 
@@ -79,6 +79,16 @@ put "/articles/:id" do |env|
   conn.exec("update articles set title = $1::text, body = $2::text where id = $3::int8", params)
   pg.release
   env.redirect "/articles/#{id}"
+end
+
+delete "/articles/:id" do |env|
+  id = env.params.url["id"].to_i32
+  params = [] of Int32
+  params << id
+  conn = pg.connection
+  conn.exec("delete from articles where id = $1::int8", params)
+  pg.release
+  env.redirect "/"
 end
 
 Kemal.run
