@@ -7,8 +7,8 @@ dependencies:
     branch: master
 
 dependencies:
-  kemal-pg:
-    github: sdogruyol/kemal-pg
+  db:
+    github: crystal-lang/crystal-db
     branch: master
 
 authors:
