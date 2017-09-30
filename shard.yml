@@ -1,5 +1,5 @@
 name: msky-kemal-sample
-version: 0.1.0
+version: 0.2.0
 
 dependencies:
   kemal:
@@ -12,6 +12,6 @@ dependencies:
     branch: master
 
 authors:
-  - ucmsky <antilogic@outlook.com>
+  - msky026 <antilogic@outlook.com>
 
 license: MIT
