@@ -1,4 +1,5 @@
 require "kemal"
+require "kemal-session"
 require "db"
 require "pg"
 
@@ -9,6 +10,36 @@ else
 end
 
 db = DB.open(database_url)
+
+Kemal::Session.config do |config|
+  config.cookie_name = "session_id"
+  config.secret = "some_secret"
+  config.gc_interval = 2.minutes # 2 minutes
+end
+
+def authorized?(env)
+  env.session.string?("username")
+end
+
+get "/login" do |env|
+  render "src/views/login.ecr", "src/views/application.ecr"
+end
+
+post "/login" do |env|
+  user_id_param = env.params.body["user_id"]
+  password_param = env.params.body["password"]
+  if user_id_param == "user1" && password_param == "pass1"
+    env.session.string("username", "user1")
+    env.redirect "/"
+  else
+    env.redirect "/login"
+  end
+end
+
+get "/logout" do |env|
+  env.session.destroy
+  env.redirect "/"
+end
 
 ["/", "/articles"].each do |path|
   get path do |env|

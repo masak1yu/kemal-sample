@@ -13,7 +13,12 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/articles">ArticleList</a></li>
-        <li><a href="/articles/new">新規投稿</a></li>
+        <% if env.session.string?("username") %>
+          <li><a href="/articles/new">新規投稿</a></li>
+          <li><a href="/logout">ログアウト</a></li>
+        <% else %>
+          <li><a href="/login">ログイン</a></li>
+        <% end %>
       </ul>
     </nav>
   </div>

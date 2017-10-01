@@ -11,6 +11,10 @@ dependencies:
     github: crystal-lang/crystal-db
     branch: master
 
+dependencies:
+  kemal-session:
+    github: kemalcr/kemal-session
+
 authors:
   - msky026 <antilogic@outlook.com>
 
