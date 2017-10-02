@@ -1,5 +1,5 @@
 name: msky-kemal-sample
-version: 0.1.0
+version: 0.2.0
 
 dependencies:
   kemal:
@@ -7,11 +7,15 @@ dependencies:
     branch: master
 
 dependencies:
-  kemal-pg:
-    github: sdogruyol/kemal-pg
+  db:
+    github: crystal-lang/crystal-db
     branch: master
 
+dependencies:
+  kemal-session:
+    github: kemalcr/kemal-session
+
 authors:
-  - ucmsky <antilogic@outlook.com>
+  - msky026 <antilogic@outlook.com>
 
 license: MIT
